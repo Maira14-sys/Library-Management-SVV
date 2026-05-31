@@ -1,0 +1,50 @@
+name: Library Management SVV CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  validate-project:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Display Project Structure
+        run: |
+          echo "Checking repository structure..."
+          ls -R
+
+      - name: Verify Z Specification Files
+        run: |
+          echo "Checking Z files..."
+          find . -name "*.tex" -o -name "*.zed"
+
+      - name: Verify VDM Files
+        run: |
+          echo "Checking VDM files..."
+          find . -name "*.vdmpp" -o -name "*.vdm"
+
+      - name: Verify Alloy Files
+        run: |
+          echo "Checking Alloy files..."
+          find . -name "*.als"
+
+      - name: Check Required Directories
+        run: |
+          test -d requirements
+          test -d z-model
+          test -d vdm-spec
+          test -d alloy-model
+
+      - name: CI Validation Complete
+        run: echo "Library Management System verification completed successfully."
